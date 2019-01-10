@@ -3,7 +3,6 @@ import logging
 
 import pandas as pd
 import pygsheets
-from tests.fixtures.loader import loader
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 logger = logging.getLogger("compass-budget")

@@ -1,36 +1,11 @@
 """Tests for the budget_type table"""
+import logging
+
+import numpy as np
 import pandas as pd
 import pytest
-import vcr
-from tests.fixtures.loader import loader
-import logging
-import numpy as np
 
 logger = logging.getLogger("compass-budget")
-
-
-@pytest.fixture()
-def budget_type_df(loader):
-    with vcr.use_cassette(
-        "fixtures/vcr_cassettes/budget_type_df.yaml", record_mode="new_episodes"
-    ):
-        return (
-            loader.worksheet_to_df("budget_type")
-            .pipe(lambda df: df.assign(id=pd.to_numeric(df.id, errors="coerce")))
-            .pipe(
-                lambda df: df.assign(
-                    parent_id=pd.to_numeric(df.parent_id, errors="coerce")
-                )
-            )
-            .pipe(
-                lambda df: df.assign(name=df.name.replace(r"^\s*$", np.nan, regex=True))
-            )
-            .pipe(
-                lambda df: df.assign(
-                    parent_name=df.parent_name.replace(r"^\s*$", np.nan, regex=True)
-                )
-            )
-        )
 
 
 def test_budget_type_df_name_is_unique(budget_type_df):
